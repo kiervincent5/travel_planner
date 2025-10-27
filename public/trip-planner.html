@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Trip Plan - Travel Planner</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .planner-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .step-indicator {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 40px;
+      padding: 0 20px;
+    }
+    
+    .step {
+      flex: 1;
+      text-align: center;
+      position: relative;
+      padding: 10px;
+    }
+    
+    .step::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #1f2937;
+      z-index: -1;
+    }
+    
+    .step:first-child::before {
+      left: 50%;
+    }
+    
+    .step:last-child::before {
+      right: 50%;
+    }
+    
+    .step-number {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #1f2937;
+      color: #94a3b8;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .step.active .step-number {
+      background: #2563eb;
+      color: white;
+    }
+    
+    .step.completed .step-number {
+      background: #10b981;
+      color: white;
+    }
+    
+    .step-title {
+      font-size: 14px;
+      color: #94a3b8;
+    }
+    
+    .step.active .step-title {
+      color: #60a5fa;
+      font-weight: 600;
+    }
+    
+    .planning-section {
+      display: none;
+    }
+    
+    .planning-section.active {
+      display: block;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #e2e8f0;
+      font-weight: 500;
+    }
+    
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      background: #1f2937;
+      border: 1px solid #374151;
+      border-radius: 8px;
+      color: #e2e8f0;
+      font-size: 14px;
+    }
+    
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    
+    .selected-item {
+      background: #1f2937;
+      border: 1px solid #374151;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    
+    .selected-item h4 {
+      margin: 0 0 8px 0;
+      color: #60a5fa;
+    }
+    
+    .selected-item p {
+      margin: 4px 0;
+      color: #94a3b8;
+      font-size: 14px;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 30px;
+    }
+    
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+    
+    .btn-primary:disabled {
+      background: #374151;
+      color: #6b7280;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    
+    .btn-primary:disabled:hover {
+      background: #374151;
+      transform: none;
+    }
+    
+    .btn-secondary {
+      background: #374151;
+      color: #e2e8f0;
+    }
+    
+    .btn-secondary:hover {
+      background: #4b5563;
+    }
+    
+    .btn-success {
+      background: #10b981;
+      color: white;
+      font-size: 16px;
+      padding: 14px 32px;
+    }
+    
+    .btn-success:hover {
+      background: #059669;
+    }
+    
+    /* Trip Summary/Receipt Styles */
+    .trip-summary {
+      background: white;
+      color: #1f2937;
+      border-radius: 12px;
+      padding: 40px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .summary-header {
+      text-align: center;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .summary-header h1 {
+      margin: 0 0 8px 0;
+      color: #1f2937;
+      font-size: 32px;
+    }
+    
+    .summary-header p {
+      margin: 0;
+      color: #6b7280;
+      font-size: 14px;
+    }
+    
+    .summary-section {
+      margin-bottom: 30px;
+    }
+    
+    .summary-section h2 {
+      color: #2563eb;
+      font-size: 20px;
+      margin: 0 0 16px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      background: #f9fafb;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    
+    .info-item {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .info-label {
+      font-size: 12px;
+      color: #6b7280;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    
+    .info-value {
+      font-size: 16px;
+      color: #1f2937;
+      font-weight: 500;
+    }
+    
+    .weather-info {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .weather-temp {
+      font-size: 48px;
+      font-weight: 700;
+    }
+    
+    .weather-details {
+      text-align: right;
+    }
+    
+    .flight-card {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    
+    .flight-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    
+    .flight-airline {
+      font-weight: 600;
+      color: #1f2937;
+    }
+    
+    .flight-price {
+      font-size: 20px;
+      font-weight: 700;
+      color: #2563eb;
+    }
+    
+    .flight-route {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #6b7280;
+    }
+    
+    .summary-footer {
+      border-top: 2px solid #e5e7eb;
+      padding-top: 20px;
+      text-align: center;
+    }
+    
+    .print-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    
+    @media print {
+      body {
+        background: white;
+      }
+      header, .print-buttons {
+        display: none;
+      }
+      .trip-summary {
+        box-shadow: none;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+      .step-title {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <h1><a href="/" style="color: inherit; text-decoration: none; cursor: pointer;">Travel Planner</a></h1>
+      <div class="header-nav">
+        <a href="/trip-planner.html" class="nav-link">Create Plan</a>
+        <a href="/my-plans.html" class="nav-link">My Plans</a>
+        <div class="user-section">
+          <span id="user-info" class="user-info"></span>
+          <button id="auth-btn" class="auth-btn">Login</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="planner-container">
+    <!-- Step Indicator -->
+    <div class="step-indicator">
+      <div class="step active" data-step="1">
+        <div class="step-number">1</div>
+        <div class="step-title">Trip Details</div>
+      </div>
+      <div class="step" data-step="2">
+        <div class="step-number">2</div>
+        <div class="step-title">Destination</div>
+      </div>
+      <div class="step" data-step="3">
+        <div class="step-number">3</div>
+        <div class="step-title">Flights</div>
+      </div>
+      <div class="step" data-step="4">
+        <div class="step-number">4</div>
+        <div class="step-title">Review</div>
+      </div>
+    </div>
+
+    <!-- Step 1: Trip Details -->
+    <section id="step-1" class="card planning-section active">
+      <h2>📝 Trip Details</h2>
+      <div class="form-group">
+        <label for="trip-title">Trip Title *</label>
+        <input type="text" id="trip-title" placeholder="e.g., Summer Vacation in Cebu" required />
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="start-date">Start Date *</label>
+          <input type="date" id="start-date" required />
+        </div>
+        <div class="form-group">
+          <label for="end-date">End Date *</label>
+          <input type="date" id="end-date" required />
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="travelers">Number of Travelers</label>
+          <input type="number" id="travelers" min="1" value="1" />
+        </div>
+        <div class="form-group">
+          <label for="budget">Budget (Optional)</label>
+          <input type="text" id="budget" placeholder="e.g., ₱50,000" />
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="trip-notes">Notes (Optional)</label>
+        <textarea id="trip-notes" placeholder="Add any special notes or requirements..."></textarea>
+      </div>
+      
+      <div class="action-buttons">
+        <button class="btn btn-primary" onclick="nextStep(2)">Next: Choose Destination →</button>
+      </div>
+    </section>
+
+    <!-- Step 2: Destination & Weather -->
+    <section id="step-2" class="card planning-section">
+      <h2>🗺️ Choose Your Destination</h2>
+      
+      <div class="form-group">
+        <label for="destination-search">Search Destination</label>
+        <div class="row">
+          <input type="text" id="destination-search" placeholder="Type a city or place..." />
+          <button class="btn btn-primary" onclick="searchDestination()">Search</button>
+        </div>
+      </div>
+      
+      <div id="destination-results"></div>
+      <div id="selected-destination"></div>
+      
+      <div class="action-buttons">
+        <button class="btn btn-secondary" onclick="prevStep(1)">← Back</button>
+        <button class="btn btn-primary" onclick="nextStep(3)" id="next-to-flights" disabled>Next: Choose Flights →</button>
+      </div>
+    </section>
+
+    <!-- Step 3: Flights -->
+    <section id="step-3" class="card planning-section">
+      <h2>✈️ Select Your Flights</h2>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="origin-airport">Origin Airport</label>
+          <input type="text" id="origin-airport" placeholder="e.g., MNL or Manila" />
+        </div>
+        <div class="form-group">
+          <label for="dest-airport">Destination Airport</label>
+          <input type="text" id="dest-airport" placeholder="e.g., CEB or Cebu" />
+        </div>
+      </div>
+      
+      <button class="btn btn-primary" onclick="searchFlights()" style="margin-bottom: 20px;">Search Flights</button>
+      
+      <div id="flight-results" style="margin-top: 20px;"></div>
+      <div id="selected-flight" style="margin-top: 20px;"></div>
+      
+      <div class="action-buttons">
+        <button class="btn btn-secondary" onclick="prevStep(2)">← Back</button>
+        <button class="btn btn-primary" onclick="nextStep(4)">Next: Review Plan →</button>
+      </div>
+    </section>
+
+    <!-- Step 4: Review & Create Plan -->
+    <section id="step-4" class="card planning-section">
+      <h2>📋 Review Your Trip Plan</h2>
+      <div id="review-content"></div>
+      
+      <div class="action-buttons">
+        <button class="btn btn-secondary" onclick="prevStep(3)">← Back</button>
+        <button class="btn btn-success" onclick="createTripPlan()">✓ Create Trip Plan</button>
+      </div>
+    </section>
+
+    <!-- Trip Summary (Hidden initially) -->
+    <section id="trip-summary-section" style="display: none;">
+      <div class="trip-summary" id="trip-summary">
+        <!-- Summary content will be generated here -->
+      </div>
+      
+      <div class="print-buttons">
+        <button class="btn btn-primary" onclick="window.location.href='/my-plans.html'">📋 View My Plans</button>
+        <button class="btn btn-secondary" onclick="window.print()">🖨️ Print Itinerary</button>
+        <button class="btn btn-secondary" onclick="downloadPDF()">📄 Download PDF</button>
+        <button class="btn btn-secondary" onclick="startNewPlan()">➕ Create New Plan</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="/trip-planner.js"></script>
+</body>
+</html>

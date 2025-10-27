@@ -50,10 +50,26 @@ Open http://localhost:3000 in your browser.
 - Logout functionality
 
 ### 🗺️ Travel Planning
+- **Trip Planner** - Step-by-step guided trip creation with itinerary generation
 - Search destinations with autocomplete
 - Get real-time weather data
 - Search airports (Philippine and international)
 - View mock flight results
+- **Generate Trip Summary** - Create printable/downloadable trip itineraries
+
+### ✨ New: Trip Planner Feature
+Create complete trip plans with our guided 4-step process:
+1. **Trip Details** - Set title, dates, travelers, and budget
+2. **Destination** - Search and select destination with automatic weather lookup
+3. **Flights** - Browse and select flights for your trip
+4. **Review & Create** - Generate a professional trip itinerary/receipt
+
+The trip planner generates a comprehensive summary including:
+- Trip information and dates
+- Destination details with coordinates
+- Weather forecast
+- Flight details and pricing
+- Printable PDF-ready format
 
 ## Endpoints
 

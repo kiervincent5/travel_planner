@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>View Trip Itinerary - Travel Planner</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .view-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .trip-summary {
+      background: white;
+      color: #1f2937;
+      border-radius: 12px;
+      padding: 40px;
+      margin-bottom: 20px;
+    }
+    
+    .summary-header {
+      text-align: center;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .summary-header h1 {
+      margin: 0 0 8px 0;
+      color: #1f2937;
+      font-size: 32px;
+    }
+    
+    .summary-header p {
+      margin: 0;
+      color: #6b7280;
+      font-size: 14px;
+    }
+    
+    .summary-section {
+      margin-bottom: 30px;
+    }
+    
+    .summary-section h2 {
+      color: #2563eb;
+      font-size: 20px;
+      margin: 0 0 16px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      background: #f9fafb;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    
+    .info-item {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .info-label {
+      font-size: 12px;
+      color: #6b7280;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    
+    .info-value {
+      font-size: 16px;
+      color: #1f2937;
+      font-weight: 500;
+    }
+    
+    .weather-info {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .weather-temp {
+      font-size: 48px;
+      font-weight: 700;
+    }
+    
+    .weather-details {
+      text-align: right;
+    }
+    
+    .flight-card {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    
+    .flight-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    
+    .flight-airline {
+      font-weight: 600;
+      color: #1f2937;
+    }
+    
+    .flight-price {
+      font-size: 20px;
+      font-weight: 700;
+      color: #2563eb;
+    }
+    
+    .flight-route {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #6b7280;
+    }
+    
+    .summary-footer {
+      border-top: 2px solid #e5e7eb;
+      padding-top: 20px;
+      text-align: center;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.2s;
+    }
+    
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+    
+    .btn-secondary {
+      background: #374151;
+      color: #e2e8f0;
+    }
+    
+    .btn-secondary:hover {
+      background: #4b5563;
+    }
+    
+    @media print {
+      body {
+        background: white;
+      }
+      header, .action-buttons {
+        display: none;
+      }
+      .trip-summary {
+        box-shadow: none;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <h1><a href="/" style="color: inherit; text-decoration: none; cursor: pointer;">Travel Planner</a></h1>
+      <div class="header-nav">
+        <a href="/trip-planner.html" class="nav-link">Create Plan</a>
+        <a href="/my-plans.html" class="nav-link">My Plans</a>
+        <div class="user-section">
+          <span id="user-info" class="user-info"></span>
+          <button id="auth-btn" class="auth-btn">Login</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="view-container">
+    <div class="trip-summary" id="trip-summary">
+      <!-- Summary content will be generated here -->
+    </div>
+    
+    <div class="action-buttons">
+      <button class="btn btn-primary" onclick="window.print()">🖨️ Print Itinerary</button>
+      <button class="btn btn-secondary" onclick="downloadPDF()">📄 Download PDF</button>
+      <a href="/my-plans.html" class="btn btn-secondary">← Back to My Plans</a>
+    </div>
+  </main>
+
+  <script src="/view-plan.js"></script>
+</body>
+</html>

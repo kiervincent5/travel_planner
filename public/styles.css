@@ -14,11 +14,29 @@ header, footer {
 header h1 { margin: 0; font-size: 24px; }
 
 .header-content {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav-link {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-link:hover {
+  color: #60a5fa;
 }
 
 .user-section {
