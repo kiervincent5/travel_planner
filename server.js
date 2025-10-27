@@ -1,13 +1,21 @@
-// Load dotenv only in development (Railway provides env vars directly)
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
-}
+// Load dotenv (works locally and on Railway)
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+
+// Validate JWT_SECRET exists
+if (!process.env.JWT_SECRET) {
+  console.error('❌ FATAL ERROR: JWT_SECRET is not defined in environment variables');
+  console.error('Available env vars:', Object.keys(process.env).filter(k => !k.includes('PASSWORD')));
+  process.exit(1);
+}
+
+console.log('✅ JWT_SECRET is loaded');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
