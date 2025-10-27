@@ -1,4 +1,7 @@
-require('dotenv').config();
+// Load environment variables from .env.production in production, .env in development
+require('dotenv').config({ 
+  path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env' 
+});
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
