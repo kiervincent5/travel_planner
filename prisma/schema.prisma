@@ -1,0 +1,152 @@
+// Travel Planner Database Schema
+// This schema defines the data models for the travel planner application
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model for authentication and user management
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  email     String   @unique
+  password  String   // Hashed password
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  trips     Trip[]
+  budgets   Budget[]
+
+  @@map("users")
+}
+
+// Trip model for storing travel plans
+model Trip {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  startDate   DateTime
+  endDate     DateTime
+  destination String
+  status      TripStatus @default(PLANNING)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  days        TripDay[]
+  expenses    Expense[]
+
+  @@map("trips")
+}
+
+// Trip day model for organizing activities by day
+model TripDay {
+  id        Int      @id @default(autoincrement())
+  date      DateTime
+  title     String?
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  tripId     Int
+  trip       Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  activities Activity[]
+
+  @@map("trip_days")
+}
+
+// Activity model for individual activities within a day
+model Activity {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  startTime   DateTime?
+  endTime     DateTime?
+  location    String?
+  cost        Decimal? @db.Decimal(10, 2)
+  category    ActivityCategory @default(OTHER)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  dayId       Int
+  day         TripDay  @relation(fields: [dayId], references: [id], onDelete: Cascade)
+
+  @@map("activities")
+}
+
+// Budget model for tracking trip budgets
+model Budget {
+  id          Int      @id @default(autoincrement())
+  totalBudget Decimal  @db.Decimal(10, 2)
+  spentAmount Decimal  @default(0) @db.Decimal(10, 2)
+  currency    String   @default("USD")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expenses    Expense[]
+
+  @@map("budgets")
+}
+
+// Expense model for tracking individual expenses
+model Expense {
+  id          Int      @id @default(autoincrement())
+  amount      Decimal  @db.Decimal(10, 2)
+  description String
+  category    ExpenseCategory
+  date        DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  tripId      Int?
+  trip        Trip?    @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  budgetId    Int?
+  budget      Budget?  @relation(fields: [budgetId], references: [id], onDelete: Cascade)
+
+  @@map("expenses")
+}
+
+// Enums
+enum TripStatus {
+  PLANNING
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum ActivityCategory {
+  ACCOMMODATION
+  TRANSPORTATION
+  FOOD
+  SIGHTSEEING
+  ENTERTAINMENT
+  SHOPPING
+  OTHER
+}
+
+enum ExpenseCategory {
+  FLIGHT
+  HOTEL
+  FOOD
+  TRANSPORT
+  ACTIVITIES
+  SHOPPING
+  EMERGENCY
+  OTHER
+}

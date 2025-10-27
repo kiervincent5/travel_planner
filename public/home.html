@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Travel Planner - Plan Your Perfect Trip</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .hero {
+      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+      padding: 80px 20px;
+      text-align: center;
+      color: white;
+    }
+    .hero h1 {
+      font-size: 48px;
+      margin: 0 0 16px 0;
+      font-weight: 700;
+    }
+    .hero p {
+      font-size: 20px;
+      margin: 0 0 32px 0;
+      opacity: 0.9;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      padding: 14px 32px;
+      background: white;
+      color: #1e3a8a;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    .btn-secondary {
+      padding: 14px 32px;
+      background: transparent;
+      color: white;
+      border: 2px solid white;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s;
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .features {
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+    .features h2 {
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 48px;
+      color: #e2e8f0;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+    }
+    .feature-card {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+      padding: 32px;
+      text-align: center;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: #2563eb;
+    }
+    .feature-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    .feature-card h3 {
+      font-size: 22px;
+      margin: 0 0 12px 0;
+      color: #60a5fa;
+    }
+    .feature-card p {
+      font-size: 15px;
+      color: #94a3b8;
+      line-height: 1.6;
+      margin: 0;
+    }
+    .cta-section {
+      background: #111827;
+      border-top: 1px solid #1f2937;
+      border-bottom: 1px solid #1f2937;
+      padding: 60px 20px;
+      text-align: center;
+      margin-top: 60px;
+    }
+    .cta-section h2 {
+      font-size: 32px;
+      margin: 0 0 16px 0;
+      color: #e2e8f0;
+    }
+    .cta-section p {
+      font-size: 18px;
+      color: #94a3b8;
+      margin: 0 0 32px 0;
+    }
+    footer {
+      text-align: center;
+      padding: 32px 20px;
+      color: #94a3b8;
+      font-size: 14px;
+    }
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 36px;
+      }
+      .hero p {
+        font-size: 18px;
+      }
+      .features h2 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <h1>Travel Planner</h1>
+      <div class="user-section">
+        <span id="user-info" class="user-info"></span>
+        <button id="auth-btn" class="auth-btn">Login</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>Plan Your Perfect Trip</h1>
+    <p>Discover destinations, check weather conditions, and find the best flights - all in one place.</p>
+    <div class="hero-buttons">
+      <a href="/planner.html" class="btn-primary">Start Planning</a>
+      <a href="/auth.html" class="btn-secondary" id="hero-auth-btn">Get Started</a>
+    </div>
+  </section>
+
+  <section class="features">
+    <h2>Everything You Need to Plan Your Journey</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🗺️</div>
+        <h3>Destination Search</h3>
+        <p>Search and explore destinations worldwide with intelligent autocomplete powered by OpenStreetMap.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌤️</div>
+        <h3>Real-Time Weather</h3>
+        <p>Get accurate weather forecasts for any location to plan your trip with confidence.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✈️</div>
+        <h3>Flight Search</h3>
+        <p>Find flights from major airports including all Philippine destinations and international routes.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔐</div>
+        <h3>Secure Account</h3>
+        <p>Create an account to save your travel plans and preferences securely.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌍</div>
+        <h3>Global Coverage</h3>
+        <p>Access information for destinations across the globe with comprehensive data.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💰</div>
+        <h3>Free to Use</h3>
+        <p>All features are completely free with no hidden costs or premium tiers.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <h2>Ready to Start Your Adventure?</h2>
+    <p>Join thousands of travelers planning their perfect trips</p>
+    <a href="/planner.html" class="btn-primary">Start Planning Now</a>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Travel Planner. Built with Nominatim, OpenWeather, and Aviationstack APIs.</p>
+  </footer>
+
+  <script>
+    // Authentication state management
+    function getUser() {
+      const userStr = localStorage.getItem('user');
+      return userStr ? JSON.parse(userStr) : null;
+    }
+
+    function logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      updateAuthUI();
+    }
+
+    function updateAuthUI() {
+      const user = getUser();
+      const userInfo = document.getElementById('user-info');
+      const authBtn = document.getElementById('auth-btn');
+      const heroAuthBtn = document.getElementById('hero-auth-btn');
+      
+      if (user) {
+        userInfo.textContent = `Welcome, ${user.username}`;
+        authBtn.textContent = 'Logout';
+        authBtn.classList.add('logout');
+        authBtn.onclick = () => {
+          logout();
+          window.location.reload();
+        };
+        heroAuthBtn.textContent = 'Go to Planner';
+        heroAuthBtn.href = '/planner.html';
+      } else {
+        userInfo.textContent = '';
+        authBtn.textContent = 'Login';
+        authBtn.classList.remove('logout');
+        authBtn.onclick = () => {
+          window.location.href = '/auth.html';
+        };
+        heroAuthBtn.textContent = 'Get Started';
+        heroAuthBtn.href = '/auth.html';
+      }
+    }
+
+    // Initialize auth UI on page load
+    document.addEventListener('DOMContentLoaded', updateAuthUI);
+  </script>
+</body>
+</html>

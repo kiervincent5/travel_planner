@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Travel Planner</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <h1>Travel Planner</h1>
+      <div class="user-section">
+        <span id="user-info" class="user-info"></span>
+        <button id="auth-btn" class="auth-btn">Login</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Destination Search</h2>
+      <div class="row">
+        <input 
+          id="place-input" type="text" placeholder="Type a city or place..." 
+        />
+        <button id="btn-autocomplete">Search</button>
+      </div>
+      <pre id="autocomplete-results" class="results"></pre>
+    </section>
+
+    <section class="card">
+      <h2>Geocode & Weather</h2>
+      <div class="row">
+        <input id="address-input" type="text" placeholder="Enter address or city" />
+        <button id="btn-geocode">Geocode</button>
+      </div>
+      <div class="row">
+        <input id="lat-input" type="text" placeholder="Latitude" readonly />
+        <input id="lon-input" type="text" placeholder="Longitude" readonly />
+        <select id="units-select">
+          <option value="metric" selected>Metric (°C)</option>
+          <option value="imperial">Imperial (°F)</option>
+        </select>
+        <button id="btn-weather">Get Weather</button>
+      </div>
+      <pre id="weather-results" class="results"></pre>
+    </section>
+
+    <section class="card">
+      <h2>Flights</h2>
+      <div class="row">
+        <input id="origin-input" type="text" placeholder="Origin" />
+        <button id="btn-origin-ac">Origin</button>
+      </div>
+      <pre id="origin-ac-results" class="results small"></pre>
+
+      <div class="row">
+        <input id="destination-input" type="text" placeholder="Destination" />
+        <button id="btn-dest-ac">Destination</button>
+      </div>
+      <pre id="dest-ac-results" class="results small"></pre>
+
+      <div class="row">
+        <input id="date-input" type="date" />
+        <input id="adults-input" type="number" min="1" value="1" placeholder="Adults" />
+        <input id="currency-input" type="text" value="PHP" placeholder="Currency (e.g., PHP)" />
+        <button id="btn-search-flights">Search Flights</button>
+      </div>
+      <pre id="flights-results" class="results"></pre>
+    </section>
+  </main>
+
+  <script src="/script.js"></script>
+</body>
+</html>
