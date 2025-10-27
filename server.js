@@ -1,4 +1,7 @@
-require('dotenv').config();
+// Load dotenv only in development (Railway provides env vars directly)
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
