@@ -258,6 +258,12 @@ async function getWeather(lat, lng) {
     const response = await fetch(`/api/weather/current?lat=${lat}&lon=${lng}&units=metric`);
     const data = await response.json();
     
+    if (data.error) {
+      console.error('Weather API error:', data.error);
+      alert('⚠️ Weather data unavailable: ' + data.error);
+      return;
+    }
+    
     if (data.main && data.weather) {
       tripPlan.weather = {
         temp: data.main.temp,
@@ -267,9 +273,14 @@ async function getWeather(lat, lng) {
         windSpeed: data.wind.speed,
         pressure: data.main.pressure
       };
+      console.log('✅ Weather data loaded:', tripPlan.weather);
+    } else {
+      console.warn('⚠️ Weather data structure unexpected:', data);
+      alert('⚠️ Weather data is currently unavailable. Please check your OpenWeather API key.');
     }
   } catch (error) {
     console.error('Weather error:', error);
+    alert('⚠️ Failed to fetch weather data. Please try again.');
   }
 }
 
